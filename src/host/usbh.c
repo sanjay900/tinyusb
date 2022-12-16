@@ -194,6 +194,22 @@ enum { RESET_DELAY = 500 };  // 200 USB specs say only 50ms but many devices req
 
 enum { CONFIG_NUM = 1 }; // default to use configuration 1
 
+static usbh_class_driver_t const * _app_driver = NULL;
+static uint8_t _app_driver_count = 0;
+static inline usbh_class_driver_t const * get_driver(uint8_t drvid)
+{
+  // Application drivers
+  if ( usbh_app_driver_get_cb )
+  {
+    if ( drvid < _app_driver_count ) return &_app_driver[drvid];
+    drvid -= _app_driver_count;
+  }
+
+  // Built-in drivers
+  if (drvid < USBH_CLASS_DRIVER_COUNT) return &usbh_class_drivers[drvid];
+
+  return NULL;
+}
 
 //--------------------------------------------------------------------+
 // INTERNAL OBJECT & FUNCTION DECLARATION
@@ -366,6 +382,16 @@ bool tuh_init(uint8_t controller_id)
   for(uint8_t i=0; i<TOTAL_DEVICES; i++)
   {
     clear_device(&_usbh_devices[i]);
+  }
+
+  if ( usbh_app_driver_get_cb )
+  {
+    _app_driver = usbh_app_driver_get_cb(&_app_driver_count);
+    for (uint8_t drv_id = 0; drv_id < _app_driver_count; drv_id++)
+    {
+      TU_LOG2("%s init\r\n", _app_driver[drv_id].name);
+      _app_driver[drv_id].init();
+    }
   }
 
   // Class drivers
@@ -1133,10 +1159,11 @@ static void process_device_unplugged(uint8_t rhport, uint8_t hub_addr, uint8_t h
       }
 
       // Close class driver
-      for (uint8_t drv_id = 0; drv_id < USBH_CLASS_DRIVER_COUNT; drv_id++)
+      for (uint8_t drv_id = 0; drv_id < USBH_CLASS_DRIVER_COUNT + _app_driver_count; drv_id++)
       {
-        TU_LOG2("%s close\r\n", usbh_class_drivers[drv_id].name);
-        usbh_class_drivers[drv_id].close(dev_addr);
+        usbh_class_driver_t const * driver = get_driver(drv_id);
+        TU_LOG2("%s close\r\n", driver->name);
+        driver->close(dev_addr);
       }
 
       hcd_device_close(rhport, dev_addr);
@@ -1544,9 +1571,9 @@ static bool _parse_configuration_descriptor(uint8_t dev_addr, tusb_desc_configur
 
     // Find driver for this interface
     uint8_t drv_id;
-    for (drv_id = 0; drv_id < USBH_CLASS_DRIVER_COUNT; drv_id++)
+    for (drv_id = 0; drv_id < USBH_CLASS_DRIVER_COUNT + _app_driver_count; drv_id++)
     {
-      usbh_class_driver_t const * driver = &usbh_class_drivers[drv_id];
+      usbh_class_driver_t const * driver = get_driver(drv_id);
 
       if ( driver->open(dev->rhport, dev_addr, desc_itf, drv_len) )
       {
@@ -1594,7 +1621,7 @@ void usbh_driver_set_config_complete(uint8_t dev_addr, uint8_t itf_num)
     uint8_t const drv_id = dev->itf2drv[itf_num];
     if (drv_id != DRVID_INVALID)
     {
-      usbh_class_driver_t const * driver = &usbh_class_drivers[drv_id];
+      usbh_class_driver_t const * driver = get_driver(drv_id);
       TU_LOG2("%s set config: itf = %u\r\n", driver->name, itf_num);
       driver->set_config(dev_addr, itf_num);
       break;

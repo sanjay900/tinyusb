@@ -98,10 +98,10 @@ void __tusb_irq_path_func(_hw_endpoint_buffer_control_update32)(struct hw_endpoi
     value |= or_mask;
     if ( or_mask & USB_BUF_CTRL_AVAIL )
     {
-      if ( *ep->buffer_control & USB_BUF_CTRL_AVAIL )
-      {
-        panic("ep %d %s was already available", tu_edpt_number(ep->ep_addr), ep_dir_string[tu_edpt_dir(ep->ep_addr)]);
-      }
+      // if ( *ep->buffer_control & USB_BUF_CTRL_AVAIL )
+      // {
+      //   panic("ep %d %s was already available", tu_edpt_number(ep->ep_addr), ep_dir_string[tu_edpt_dir(ep->ep_addr)]);
+      // }
       *ep->buffer_control = value & ~USB_BUF_CTRL_AVAIL;
       // 12 cycle delay.. (should be good for 48*12Mhz = 576Mhz)
       // Don't need delay in host mode as host is in charge

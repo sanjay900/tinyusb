@@ -7,6 +7,7 @@ on:
       - 'examples/**'
       - 'lib/**'
       - 'hw/**'
+      - '.github/workflows/build_riscv.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -14,6 +15,7 @@ on:
       - 'examples/**'
       - 'lib/**'
       - 'hw/**'
+      - '.github/workflows/build_riscv.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -27,6 +29,7 @@ jobs:
       matrix:
         family:
         # Alphabetical order
+        - 'ch32v307'
         - 'fomu'
         - 'gd32vf103'
     steps:

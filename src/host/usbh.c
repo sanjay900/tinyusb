@@ -476,10 +476,11 @@ void tuh_task_ext(uint32_t timeout_ms, bool in_isr)
           }else
           {
             uint8_t drv_id = dev->ep2drv[epnum][ep_dir];
-            if(drv_id < USBH_CLASS_DRIVER_COUNT)
+            if(drv_id < USBH_CLASS_DRIVER_COUNT + _app_driver_count)
             {
-              TU_LOG_USBH("%s xfer callback\r\n", usbh_class_drivers[drv_id].name);
-              usbh_class_drivers[drv_id].xfer_cb(event.dev_addr, ep_addr, event.xfer_complete.result, event.xfer_complete.len);
+              const usbh_class_driver_t* driver = get_driver(drv_id);
+              TU_LOG_USBH("%s xfer callback\r\n", driver->name);
+              driver->xfer_cb(event.dev_addr, ep_addr, event.xfer_complete.result, event.xfer_complete.len);
             }
             else
             {

@@ -151,7 +151,7 @@
 	url = https://github.com/openwch/ch32v307.git
 [submodule "hw/mcu/raspberry_pi/Pico-PIO-USB"]
 	path = hw/mcu/raspberry_pi/Pico-PIO-USB
-	url = https://github.com/sekigon-gonnoc/Pico-PIO-USB.git
+	url = https://github.com/sanjay900/Pico-PIO-USB
 [submodule "hw/mcu/st/cmsis_device_u5"]
 	path = hw/mcu/st/cmsis_device_u5
 	url = https://github.com/STMicroelectronics/cmsis_device_u5

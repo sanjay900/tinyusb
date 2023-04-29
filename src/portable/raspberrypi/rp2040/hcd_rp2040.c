@@ -446,7 +446,7 @@ tusb_speed_t hcd_port_speed_get(uint8_t rhport)
       return TUSB_SPEED_FULL;
     default:
       panic("Invalid speed\n");
-      return TUSB_SPEED_INVALID;
+      // return TUSB_SPEED_INVALID;
   }
 }
 
@@ -562,6 +562,11 @@ bool hcd_edpt_xfer(uint8_t rhport, uint8_t dev_addr, uint8_t ep_addr, uint8_t * 
     uint32_t flags = USB_SIE_CTRL_START_TRANS_BITS | SIE_CTRL_BASE |
                      (ep_dir ? USB_SIE_CTRL_RECEIVE_DATA_BITS : USB_SIE_CTRL_SEND_DATA_BITS) |
                      (need_pre(dev_addr) ? USB_SIE_CTRL_PREAMBLE_EN_BITS : 0);
+    // START_TRANS bit on SIE_CTRL seems to exhibit the same behavior as the AVAILABLE bit
+    // described in RP2040 Datasheet, release 2.1, section "4.1.2.5.1. Concurrent access".
+    // We write everything except the START_TRANS bit first, then wait some cycles.
+    usb_hw->sie_ctrl = flags & ~USB_SIE_CTRL_START_TRANS_BITS;
+    busy_wait_at_least_cycles(12);
     usb_hw->sie_ctrl = flags;
   }else
   {
@@ -602,6 +607,11 @@ bool hcd_setup_send(uint8_t rhport, uint8_t dev_addr, uint8_t const setup_packet
   uint32_t const flags = SIE_CTRL_BASE | USB_SIE_CTRL_SEND_SETUP_BITS | USB_SIE_CTRL_START_TRANS_BITS |
                          (need_pre(dev_addr) ? USB_SIE_CTRL_PREAMBLE_EN_BITS : 0);
 
+  // START_TRANS bit on SIE_CTRL seems to exhibit the same behavior as the AVAILABLE bit
+  // described in RP2040 Datasheet, release 2.1, section "4.1.2.5.1. Concurrent access".
+  // We write everything except the START_TRANS bit first, then wait some cycles.
+  usb_hw->sie_ctrl = flags & ~USB_SIE_CTRL_START_TRANS_BITS;
+  busy_wait_at_least_cycles(12);
   usb_hw->sie_ctrl = flags;
 
   return true;
@@ -613,7 +623,7 @@ bool hcd_edpt_clear_stall(uint8_t dev_addr, uint8_t ep_addr)
   (void) ep_addr;
 
   panic("hcd_clear_stall");
-  return true;
+  // return true;
 }
 
 #endif

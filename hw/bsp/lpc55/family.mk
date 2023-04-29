@@ -1,6 +1,6 @@
 UF2_FAMILY_ID = 0x2abc77ec
 SDK_DIR = hw/mcu/nxp/mcux-sdk
-DEPS_SUBMODULES += lib/sct_neopixel $(SDK_DIR)
+DEPS_SUBMODULES += lib/CMSIS_5 lib/sct_neopixel $(SDK_DIR)
 
 include $(TOP)/$(BOARD_PATH)/board.mk
 
@@ -51,7 +51,7 @@ SRC_C += \
 INC += \
 	$(TOP)/$(BOARD_PATH) \
 	$(TOP)/lib/sct_neopixel \
-	$(TOP)/$(MCU_DIR)/../../CMSIS/Include \
+	$(TOP)/lib/CMSIS_5/CMSIS/Core/Include \
 	$(TOP)/$(MCU_DIR) \
 	$(TOP)/$(MCU_DIR)/drivers \
 	$(TOP)/$(SDK_DIR)/drivers/common \
@@ -65,4 +65,4 @@ SRC_S += $(MCU_DIR)/gcc/startup_$(MCU_CORE).S
 LIBS += $(TOP)/$(MCU_DIR)/gcc/libpower_hardabi.a
 
 # For freeRTOS port source
-FREERTOS_PORT = ARM_CM33_NTZ/non_secure
+FREERTOS_PORTABLE_SRC = $(FREERTOS_PORTABLE_PATH)/ARM_CM33_NTZ/non_secure

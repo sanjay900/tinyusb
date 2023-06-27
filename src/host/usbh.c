@@ -1230,16 +1230,11 @@ static void process_removing_device(uint8_t rhport, uint8_t hub_addr, uint8_t hu
       }
 
       // Close class driver
-<<<<<<< HEAD
       for (uint8_t drv_id = 0; drv_id < USBH_CLASS_DRIVER_COUNT + _app_driver_count; drv_id++)
       {
         usbh_class_driver_t const * driver = get_driver(drv_id);
         TU_LOG_USBH("%s close\r\n", driver->name);
         driver->close(dev_addr);
-=======
-      for (uint8_t drv_id = 0; drv_id < USBH_CLASS_DRIVER_COUNT; drv_id++) {
-        usbh_class_drivers[drv_id].close(daddr);
->>>>>>> upstream/master
       }
 
       hcd_device_close(rhport, daddr);

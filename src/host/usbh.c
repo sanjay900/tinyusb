@@ -1234,7 +1234,7 @@ static void process_removing_device(uint8_t rhport, uint8_t hub_addr, uint8_t hu
       {
         usbh_class_driver_t const * driver = get_driver(drv_id);
         TU_LOG_USBH("%s close\r\n", driver->name);
-        driver->close(dev_addr);
+        driver->close(daddr);
       }
 
       hcd_device_close(rhport, daddr);

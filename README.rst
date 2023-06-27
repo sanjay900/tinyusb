@@ -20,8 +20,8 @@ Please take a look at the online `documentation <https://docs.tinyusb.org/>`__.
 	├── docs            # Documentation
 	├── examples        # Sample with Makefile build support
 	├── hw
-	│   ├── bsp         # Supported boards source files
-	│   └── mcu         # Low level mcu core & peripheral drivers
+	│   ├── bsp         # Supported boards source files
+	│   └── mcu         # Low level mcu core & peripheral drivers
 	├── lib             # Sources from 3rd party such as freeRTOS, fatfs ...
 	├── src             # All sources files for TinyUSB stack itself.
 	├── test            # Unit tests for the stack
@@ -55,7 +55,7 @@ The stack supports the following MCUs:
 
 - **Silabs:** EFM32GG
 - **Sony:** CXD56
-- **ST:** STM32 series: F0, F1, F2, F3, F4, F7, H7, G4, L0, L1, L4, L4+, WB
+- **ST:** STM32 series: F0, F1, F2, F3, F4, F7, H7, G0, G4, L0, L1, L4, L4+, WB
 - **TI:** MSP430, MSP432E4, TM4C123
 - **ValentyUSB:** eptri
 - **WCH:** CH32V307
@@ -88,6 +88,13 @@ Host Stack
 - Human Interface Device (HID): Keyboard, Mouse, Generic
 - Mass Storage Class (MSC)
 - Hub with multiple-level support
+
+TypeC PD Stack
+==============
+
+- Power Delivery 3.0 (PD3.0) with USB Type-C support (WIP)
+- Super early stage, only for testing purpose
+- Only support STM32 G4
 
 OS Abstraction layer
 ====================

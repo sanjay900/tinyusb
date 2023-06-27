@@ -97,9 +97,9 @@
 #define OPT_MCU_VALENTYUSB_EPTRI  600 ///< Fomu eptri config
 
 // NXP iMX RT
-#define OPT_MCU_MIMXRT            700             ///< NXP iMX RT Series
-#define OPT_MCU_MIMXRT10XX        OPT_MCU_MIMXRT  ///< RT10xx
-#define OPT_MCU_MIMXRT11XX        OPT_MCU_MIMXRT  ///< RT11xx
+#define OPT_MCU_MIMXRT1XXX        700                 ///< NXP iMX RT1xxx Series
+#define OPT_MCU_MIMXRT10XX        OPT_MCU_MIMXRT1XXX  ///< RT10xx
+#define OPT_MCU_MIMXRT11XX        OPT_MCU_MIMXRT1XXX  ///< RT11xx
 
 // Nuvoton
 #define OPT_MCU_NUC121            800
@@ -119,7 +119,8 @@
 
 // NXP Kinetis
 #define OPT_MCU_KINETIS_KL       1200 ///< NXP KL series
-#define OPT_MCU_KINETIS_K32      1201 ///< NXP K32 series
+#define OPT_MCU_KINETIS_K32L     1201 ///< NXP K32L series
+#define OPT_MCU_KINETIS_K32      1201 ///< Alias to K32L
 
 #define OPT_MCU_MKL25ZXX         1200 ///< Alias to KL (obsolete)
 #define OPT_MCU_K32L2BXX         1201 ///< Alias to K32 (obsolete)
@@ -165,6 +166,10 @@
 
 // WCH
 #define OPT_MCU_CH32V307         2200 ///< WCH CH32V307
+
+
+// NXP LPC MCX
+#define OPT_MCU_MCXN9            2300  ///< NXP MCX N9 Series
 
 // Helper to check if configured MCU is one of listed
 // Apply _TU_CHECK_MCU with || as separator to list of input
@@ -274,7 +279,7 @@
 // In case TUP_MCU_STRICT_ALIGN = 1 and TUP_ARCH_STRICT_ALIGN =0, we will not reply on compiler
 // to generate unaligned access code.
 // LPC_IP3511 Highspeed cannot access unaligned memory on USB_RAM
-#if TUD_OPT_HIGH_SPEED && (CFG_TUSB_MCU == OPT_MCU_LPC54XXX || CFG_TUSB_MCU == OPT_MCU_LPC55XX)
+#if TUD_OPT_HIGH_SPEED && TU_CHECK_MCU(OPT_MCU_LPC54XXX, OPT_MCU_LPC55XX)
   #define TUP_MCU_STRICT_ALIGN   1
 #else
   #define TUP_MCU_STRICT_ALIGN   0
@@ -478,6 +483,16 @@
 #define CFG_TUD_RPI_PIO_USB 0
 #endif
 
+
+//--------------------------------------------------------------------+
+// TypeC Options (Default)
+//--------------------------------------------------------------------+
+
+#ifndef CFG_TUC_ENABLED
+#define CFG_TUC_ENABLED 0
+
+#define tuc_int_handler(_p)
+#endif
 
 //------------------------------------------------------------------
 // Configuration Validation

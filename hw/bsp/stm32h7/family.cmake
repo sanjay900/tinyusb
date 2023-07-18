@@ -20,13 +20,6 @@ set(CMAKE_TOOLCHAIN_FILE ${TOP}/tools/cmake/toolchain/arm_${TOOLCHAIN}.cmake)
 
 set(FAMILY_MCUS STM32H7 CACHE INTERNAL "")
 
-# enable LTO if supported
-include(CheckIPOSupported)
-check_ipo_supported(RESULT IPO_SUPPORTED)
-if (IPO_SUPPORTED)
-  set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-endif ()
-
 
 #------------------------------------
 # BOARD_TARGET
@@ -89,8 +82,8 @@ endfunction()
 #------------------------------------
 # Functions
 #------------------------------------
-function(family_configure_example TARGET)
-  family_configure_common(${TARGET})
+function(family_configure_example TARGET RTOS)
+  family_configure_common(${TARGET} ${RTOS})
 
   # Board target
   add_board_target(board_${BOARD})
@@ -110,7 +103,7 @@ function(family_configure_example TARGET)
     )
 
   # Add TinyUSB target and port source
-  family_add_tinyusb(${TARGET} OPT_MCU_STM32H7)
+  family_add_tinyusb(${TARGET} OPT_MCU_STM32H7 ${RTOS})
   target_sources(${TARGET}-tinyusb PUBLIC
     ${TOP}/src/portable/synopsys/dwc2/dcd_dwc2.c
     )
@@ -122,17 +115,4 @@ function(family_configure_example TARGET)
   # Flashing
   family_flash_stlink(${TARGET})
   family_flash_jlink(${TARGET})
-endfunction()
-
-
-function(family_configure_device_example TARGET)
-  family_configure_example(${TARGET})
-endfunction()
-
-function(family_configure_host_example TARGET)
-  family_configure_example(${TARGET})
-endfunction()
-
-function(family_configure_dual_usb_example TARGET)
-  family_configure_example(${TARGET})
 endfunction()

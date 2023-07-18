@@ -19,7 +19,7 @@ hw/mcu/nuvoton                            https://github.com/majbthrd/nuc_driver
 hw/mcu/nxp/lpcopen                        https://github.com/hathach/nxp_lpcopen.git                      43c45c85405a5dd114fff0ea95cca62837740c13
 hw/mcu/nxp/mcux-sdk                       https://github.com/NXPmicro/mcux-sdk.git                        ae2ab01d9d70ad00cd0e935c2552bd5f0e5c0294
 hw/mcu/nxp/nxp_sdk                        https://github.com/hathach/nxp_sdk.git                          845c8fc49b6fb660f06a5c45225494eacb06f00c
-hw/mcu/raspberry_pi/Pico-PIO-USB          https://github.com/sekigon-gonnoc/Pico-PIO-USB.git              c3715ce94b6f6391856de56081d4d9b3e98fa93d
+hw/mcu/raspberry_pi/Pico-PIO-USB          https://github.com/sekigon-gonnoc/Pico-PIO-USB.git              5a7aa8d4e78f9a50e4fb9defcf3488b3fc44aff1
 hw/mcu/renesas/fsp                        https://github.com/renesas/fsp.git                              8dc14709f2a6518b43f71efad70d900b7718d9f1
 hw/mcu/renesas/rx                         https://github.com/kkitayam/rx_device.git                       706b4e0cf485605c32351e2f90f5698267996023
 hw/mcu/silabs/cmsis-dfp-efm32gg12b        https://github.com/cmsis-packs/cmsis-dfp-efm32gg12b.git         f1c31b7887669cb230b3ea63f9b56769078960bc

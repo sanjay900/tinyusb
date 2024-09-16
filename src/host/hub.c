@@ -195,8 +195,7 @@ bool hub_open(uint8_t rhport, uint8_t dev_addr, tusb_desc_interface_t const *itf
 {
   (void) rhport;
 
-  TU_VERIFY(TUSB_CLASS_HUB == itf_desc->bInterfaceClass &&
-            0              == itf_desc->bInterfaceSubClass);
+  TU_VERIFY(TUSB_CLASS_HUB == itf_desc->bInterfaceClass);
 
   // hub driver does not support multiple TT yet
   TU_VERIFY(itf_desc->bInterfaceProtocol <= 1);

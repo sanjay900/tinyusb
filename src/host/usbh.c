@@ -649,7 +649,7 @@ bool tuh_control_xfer (tuh_xfer_t* xfer) {
 
     TU_ASSERT( hcd_setup_send(rhport, daddr, (uint8_t*) &_ctrl_xfer.request) );
     long start = to_us_since_boot(get_absolute_time());
-    while (result == XFER_RESULT_INVALID && (to_us_since_boot(get_absolute_time()) - start) < 100) {
+    while (result == XFER_RESULT_INVALID && (to_us_since_boot(get_absolute_time()) - start) < 1000*100) {
       // Note: this can be called within an callback ie. part of tuh_task()
       // therefore event with RTOS tuh_task() still need to be invoked
       if (tuh_task_event_ready()) {

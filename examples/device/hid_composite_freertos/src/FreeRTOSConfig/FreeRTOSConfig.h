@@ -48,7 +48,7 @@
 // Include MCU header
 #include "bsp/board_mcu.h"
 
-#if CFG_TUSB_MCU == OPT_MCU_ESP32S2 || CFG_TUSB_MCU == OPT_MCU_ESP32S3
+#if TUSB_MCU_VENDOR_ESPRESSIF
   #error "ESP32-Sx should use IDF's FreeRTOSConfig.h"
 #endif
 
@@ -67,6 +67,7 @@
 #define configENABLE_FPU								        1
 #define configENABLE_TRUSTZONE					        0
 #define configMINIMAL_SECURE_STACK_SIZE					( 1024 )
+#define configRUN_FREERTOS_SECURE_ONLY          1
 
 #define configUSE_PREEMPTION                    1
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 0
@@ -96,6 +97,7 @@
 #define configUSE_TICK_HOOK                    0
 #define configUSE_MALLOC_FAILED_HOOK           0 // cause nested extern warning
 #define configCHECK_FOR_STACK_OVERFLOW         2
+#define configCHECK_HANDLER_INSTALLATION       0
 
 /* Run time and task stats gathering related definitions. */
 #define configGENERATE_RUN_TIME_STATS          0
@@ -129,23 +131,6 @@
 #define INCLUDE_eTaskGetState                  0
 #define INCLUDE_xEventGroupSetBitFromISR       0
 #define INCLUDE_xTimerPendFunctionCall         0
-
-/* Define to trap errors during development. */
-// Halt CPU (breakpoint) when hitting error, only apply for Cortex M3, M4, M7
-#if defined(__ARM_ARCH_7M__) || defined (__ARM_ARCH_7EM__)
-  #define configASSERT(_exp) \
-    do {\
-      if ( !(_exp) ) { \
-        volatile uint32_t* ARM_CM_DHCSR =  ((volatile uint32_t*) 0xE000EDF0UL); /* Cortex M CoreDebug->DHCSR */ \
-        if ( (*ARM_CM_DHCSR) & 1UL ) {  /* Only halt mcu if debugger is attached */ \
-          taskDISABLE_INTERRUPTS(); \
-           __asm("BKPT #0\n"); \
-        }\
-      }\
-    } while(0)
-#else
-  #define configASSERT( x )
-#endif
 
 #ifdef __RX__
 /* Renesas RX series */

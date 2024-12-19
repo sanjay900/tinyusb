@@ -19,12 +19,16 @@ SILABS_CMSIS = hw/mcu/silabs/cmsis-dfp-$(SILABS_FAMILY)/Device/SiliconLabs/$(she
 DEPS_SUBMODULES += hw/mcu/silabs/cmsis-dfp-$(SILABS_FAMILY)
 DEPS_SUBMODULES += lib/CMSIS_5
 
+LDFLAGS_GCC += -specs=nosys.specs -specs=nano.specs
+
 # All source paths should be relative to the top level.
 LD_FILE = $(SILABS_CMSIS)/Source/GCC/$(SILABS_FAMILY).ld
 
 SRC_C += \
   $(SILABS_CMSIS)/Source/system_$(SILABS_FAMILY).c \
-	src/portable/synopsys/dwc2/dcd_dwc2.c
+	src/portable/synopsys/dwc2/dcd_dwc2.c \
+	src/portable/synopsys/dwc2/hcd_dwc2.c \
+	src/portable/synopsys/dwc2/dwc2_common.c \
 
 SRC_S += \
   $(SILABS_CMSIS)/Source/GCC/startup_$(SILABS_FAMILY).S

@@ -23,10 +23,6 @@
  *
  */
 
-/* This example current worked and tested with following controller
- * - Sony DualShock 4 [CUH-ZCT2x] VID = 0x054c, PID = 0x09cc
- */
-
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,6 +30,7 @@
 
 #include "bsp/board_api.h"
 #include "tusb.h"
+#include "class/hid/hid.h"
 
 // English
 #define LANGUAGE_ID 0x0409
@@ -65,7 +62,11 @@ int main(void)
   printf("TinyUSB Bare API Example\r\n");
 
   // init host stack on configured roothub port
-  tuh_init(BOARD_TUH_RHPORT);
+  tusb_rhport_init_t host_init = {
+    .role = TUSB_ROLE_HOST,
+    .speed = TUSB_SPEED_AUTO
+  };
+  tusb_init(BOARD_TUH_RHPORT, &host_init);
 
   if (board_init_after_tusb) {
     board_init_after_tusb();
@@ -420,5 +421,5 @@ static void print_utf16(uint16_t *temp_buf, size_t buf_len) {
     _convert_utf16le_to_utf8(temp_buf + 1, utf16_len, (uint8_t *) temp_buf, sizeof(uint16_t) * buf_len);
     ((uint8_t*) temp_buf)[utf8_len] = '\0';
 
-    printf((char*)temp_buf);
+    printf("%s", (char*)temp_buf);
 }

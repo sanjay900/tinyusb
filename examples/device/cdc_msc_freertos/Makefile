@@ -1,20 +1,17 @@
-DEPS_SUBMODULES += lib/FreeRTOS-Kernel
-
-include ../../make.mk
+include ../../build_system/make/make.mk
 
 FREERTOS_SRC = lib/FreeRTOS-Kernel
-FREERTOS_PORTABLE_PATH= $(FREERTOS_SRC)/portable/$(if $(USE_IAR),IAR,GCC)
+FREERTOS_PORTABLE_PATH = $(FREERTOS_SRC)/portable/$(if $(findstring iar,$(TOOLCHAIN)),IAR,GCC)
 
 INC += \
 	src \
 	src/FreeRTOSConfig \
 	$(TOP)/hw \
 	$(TOP)/$(FREERTOS_SRC)/include \
-	$(TOP)/$(FREERTOS_PORTABLE_SRC)
+	$(TOP)/$(FREERTOS_PORTABLE_SRC) \
 
 # Example source
 EXAMPLE_SOURCE = \
-	src/freertos_hook.c \
 	src/main.c \
 	src/msc_disk.c \
 	src/usb_descriptors.c
@@ -45,4 +42,4 @@ CFLAGS_GCC += -Wno-error=cast-qual
 # FreeRTOS (lto + Os) linker issue
 LDFLAGS_GCC += -Wl,--undefined=vTaskSwitchContext
 
-include ../../rules.mk
+include ../../build_system/make/rules.mk

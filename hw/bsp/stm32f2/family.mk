@@ -16,13 +16,18 @@ CFLAGS += \
 
 CFLAGS_GCC += \
   -flto \
-  -nostdlib -nostartfiles \
 
 # mcu driver cause following warnings
 CFLAGS_GCC += -Wno-error=sign-compare
 
+LDFLAGS_GCC += \
+  -nostdlib -nostartfiles \
+  --specs=nosys.specs --specs=nano.specs
+
 SRC_C += \
   src/portable/synopsys/dwc2/dcd_dwc2.c \
+  src/portable/synopsys/dwc2/hcd_dwc2.c \
+  src/portable/synopsys/dwc2/dwc2_common.c \
   $(ST_CMSIS)/Source/Templates/system_stm32$(ST_FAMILY)xx.c \
   $(ST_HAL_DRIVER)/Src/stm32$(ST_FAMILY)xx_hal.c \
   $(ST_HAL_DRIVER)/Src/stm32$(ST_FAMILY)xx_hal_cortex.c \

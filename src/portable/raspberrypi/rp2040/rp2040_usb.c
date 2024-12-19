@@ -104,9 +104,9 @@ void __tusb_irq_path_func(_hw_endpoint_buffer_control_update32)(struct hw_endpoi
   if (or_mask) {
     value |= or_mask;
     if (or_mask & USB_BUF_CTRL_AVAIL) {
-      if (*ep->buffer_control & USB_BUF_CTRL_AVAIL) {
-        panic("ep %02X was already available", ep->ep_addr);
-      }
+      // if (*ep->buffer_control & USB_BUF_CTRL_AVAIL) {
+      //   panic("ep %02X was already available", ep->ep_addr);
+      // }
       *ep->buffer_control = value & ~USB_BUF_CTRL_AVAIL;
       // 4.1.2.5.1 Con-current access: 12 cycles (should be good for 48*12Mhz = 576Mhz) after write to buffer control
       // Don't need delay in host mode as host is in charge

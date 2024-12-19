@@ -30,6 +30,7 @@
 
 #include "host/hcd.h"
 #include "tusb.h"
+#include "class/audio/audio.h"
 #include "host/usbh_pvt.h"
 #include "hub.h"
 #include "pico/time.h"
